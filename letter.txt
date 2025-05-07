@@ -1,0 +1,30 @@
+1.import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score , classification_report
+
+2.df = pd.read_csv("letter-recognition.data", header=None)
+x = df.iloc[:, 1:]      # features
+y = df.iloc[:, 0]       # labels (letters)
+
+3.x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+scaler = StandardScaler()
+x_train = scaler.fit_transform(x_train)
+x_test  = scaler.transform(x_test)
+
+4.mlp = MLPClassifier(
+    hidden_layer_sizes=(50,),   # single 50-unit layer
+    max_iter=100,               # stop after 100 iterations
+    early_stopping=True,        # auto-stop if no improvement
+    random_state=1
+)
+
+5.mlp.fit(x_train, y_train)
+y_pred = mlp.predict(x_test)
+
+6.for actual, pred in zip(y_test[:10], y_pred[:10]):
+    print(f"Actual: {actual}  Predicted: {pred}")
+
+7.print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test,y_pred))
