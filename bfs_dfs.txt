@@ -108,8 +108,10 @@ class Graph{
                     for(auto j = graph[current].begin(); j != graph[current].end();j++){
                         if(visited[*j] == false){
                             #pragma omp critical
+                            {  
                                 q.push(*j);
                                 visited[*j] = true;
+                             }
                         }
                     }
             }
@@ -297,10 +299,13 @@ class Graph{
                     
                 #pragma omp parallel for
                     for(auto j = graph[current].begin(); j != graph[current].end();j++){
-                        if(visited[*j] == false){
+                        if(visited[*j] == false)
+                         {
                             #pragma omp critical
+                            {
                                 q.push(*j);
                                 visited[*j] = true;
+                            }
                         }
                     }
             }
